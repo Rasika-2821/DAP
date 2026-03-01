@@ -5,26 +5,19 @@ import { Button } from '@/components/ui/button';
 import { AddressCard } from '@/components/addresses/AddressCard';
 import { CreateAddressWizard } from '@/components/addresses/CreateAddressWizard';
 import { useDAP } from '@/contexts/DAPContext';
-import { DigitalAddress } from '@/data/mock-data';
 
 export default function MyAddresses() {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const { addresses, addAddress, updateAddress, deleteAddress, username } = useDAP();
 
-  const handleCreateAddress = (newAddress: { label: string; digipin: string; location: GeocodingResult; description?: string }) => {
-    const address: DigitalAddress = {
-      id: `addr_${Date.now()}`,
-      label: `${username}@${newAddress.label}`,
-      digipin: newAddress.digipin,
-      provider: 'India Post AIP',
-      verificationLevel: 'L1',
-      verificationLabel: 'Self Declared',
-      createdAt: new Date().toISOString(),
-      lat: newAddress.location.lat,
-      lon: newAddress.location.lon,
-      description: newAddress.description || newAddress.location.displayName.split(',').slice(0, 2).join(', ')
-    };
-    addAddress(address);
+  const handleCreateAddress = async (newAddress: { label: string; digipin: string; location: GeocodingResult; description?: string }) => {
+    const description = newAddress.description || newAddress.location.displayName.split(',').slice(0, 2).join(', ');
+    await addAddress(
+      newAddress.label,
+      newAddress.digipin,
+      { lat: newAddress.location.lat, lon: newAddress.location.lon },
+      description
+    );
   };
 
   return (

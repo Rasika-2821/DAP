@@ -29,7 +29,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { DigitalAddress } from '@/data/mock-data';
+import { DigitalAddress } from '@/contexts/DAPContext';
 import { toast } from 'sonner';
 import { useDAP } from '@/contexts/DAPContext';
 
